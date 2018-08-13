@@ -471,13 +471,16 @@ abstract class Engine
     final protected function parseFullTransactionDescription()
     {
         $matches = [];
+        $result = '';
+
         if (preg_match_all('/[\n]:86:(.*?)(?=\n(:6(1|2))|$)/s', $this->getCurrentTransactionData(), $matches)
             && !empty($matches[1])
         ) {
-            return implode(PHP_EOL, $matches[1]);
+            $result = implode(PHP_EOL, $matches[1]);
+            $result = preg_replace('/[\r\n]+/', '', trim($result));
         }
 
-        return '';
+        return $result;
     }
 
     /**
