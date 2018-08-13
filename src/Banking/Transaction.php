@@ -17,7 +17,7 @@ class Transaction implements \JsonSerializable
     private $accountName = '';
     private $price = 0.0;
     private $debitcredit = '';
-    private $cancellation = false;
+    private $cancellationReason = null;
     private $description = '';
     private $fullDescription = '';
     private $valueTimestamp = 0;
@@ -65,11 +65,11 @@ class Transaction implements \JsonSerializable
     }
 
     /**
-     * @param bool $var
+     * @param string|null $var
      */
-    public function setCancellation($var)
+    public function setCancellationReason($var)
     {
-        $this->cancellation = (bool) $var;
+        $this->cancellationReason = $var;
     }
 
     /**
@@ -206,10 +206,18 @@ class Transaction implements \JsonSerializable
     }
 
     /**
+     * @return string|null
+     */
+    public function getCancellationReason()
+    {
+        return $this->cancellationReason;
+    }
+
+    /**
      * @return bool
      */
     public function isCancellation()
     {
-        return $this->cancellation;
+        return $this->cancellationReason !== null;
     }
 }

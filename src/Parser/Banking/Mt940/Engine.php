@@ -149,7 +149,7 @@ abstract class Engine
                 $transaction->setAccountName($this->parseTransactionAccountName());
                 $transaction->setPrice($this->parseTransactionPrice());
                 $transaction->setDebitCredit($this->parseTransactionDebitCredit());
-                $transaction->setCancellation($this->parseTransactionCancellation());
+                $transaction->setCancellationReason($this->parseTransactionCancellationReason());
                 $transaction->setDescription($this->parseTransactionDescription());
                 $transaction->setFullDescription($this->parseFullTransactionDescription());
                 $transaction->setValueTimestamp($this->parseTransactionValueTimestamp());
@@ -439,9 +439,9 @@ abstract class Engine
      *
      * @return boolean
      */
-    protected function parseTransactionCancellation () {
-        $found = preg_match('#[\n]:86:.*/RTRN/#', $this->getCurrentTransactionData(), $matches);
-        return $found === 1;
+    protected function parseTransactionCancellationReason() {
+        preg_match('#[\n]:86:.*/RTRN/([^/]+)/#', $this->getCurrentTransactionData(), $matches);
+        return $matches[1] ?? null;
     }
 
     /**
