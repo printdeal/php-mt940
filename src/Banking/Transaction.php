@@ -19,6 +19,7 @@ class Transaction implements \JsonSerializable
     private $debitcredit = '';
     private $cancellation = false;
     private $description = '';
+    private $fullDescription = '';
     private $valueTimestamp = 0;
     private $entryTimestamp = 0;
     private $transactionCode = '';
@@ -77,6 +78,14 @@ class Transaction implements \JsonSerializable
     public function setDescription($var)
     {
         $this->description = (string) $var;
+    }
+
+    /**
+     * @param string $var
+     */
+    public function setFullDescription($var)
+    {
+        $this->fullDescription = $var;
     }
 
     /**
@@ -142,6 +151,14 @@ class Transaction implements \JsonSerializable
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullDescription()
+    {
+        return $this->fullDescription;
     }
 
     /**

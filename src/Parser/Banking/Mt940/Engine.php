@@ -151,6 +151,7 @@ abstract class Engine
                 $transaction->setDebitCredit($this->parseTransactionDebitCredit());
                 $transaction->setCancellation($this->parseTransactionCancellation());
                 $transaction->setDescription($this->parseTransactionDescription());
+                $transaction->setFullDescription($this->parseFullTransactionDescription());
                 $transaction->setValueTimestamp($this->parseTransactionValueTimestamp());
                 $transaction->setEntryTimestamp($this->parseTransactionEntryTimestamp());
                 $transaction->setTransactionCode($this->parseTransactionCode());
@@ -439,7 +440,8 @@ abstract class Engine
      * @return boolean
      */
     protected function parseTransactionCancellation () {
-        return false;
+        $found = preg_match('#[\n]:86:.*/RTRN/#', $this->getCurrentTransactionData(), $matches);
+        return $found === 1;
     }
 
     /**
@@ -454,6 +456,25 @@ abstract class Engine
                 && !empty($results[1])
         ) {
             return $this->sanitizeDescription(implode(PHP_EOL, $results[1]));
+        }
+
+        return '';
+    }
+
+    /**
+     * Get the full transaction description.
+     *
+     * This method cannot be overridden.
+     *
+     * @return string
+     */
+    final protected function parseFullTransactionDescription()
+    {
+        $matches = [];
+        if (preg_match_all('/[\n]:86:(.*?)(?=\n(:6(1|2))|$)/s', $this->getCurrentTransactionData(), $matches)
+            && !empty($matches[1])
+        ) {
+            return implode(PHP_EOL, $matches[1]);
         }
 
         return '';
