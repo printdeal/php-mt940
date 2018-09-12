@@ -60,7 +60,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function testStructuredMt940() {
         $statements = $this->engine->parse();
         $structuredTransaction = $statements[0]->getTransactions()[4];
-        $this->assertEquals('437015300', $structuredTransaction->getAccount());
+        $this->assertEquals('NL83ABNA0437015300', $structuredTransaction->getAccount());
         $this->assertEquals('ACHMEA SCHADEVERZEKERINGEN N.V.', $structuredTransaction->getAccountName());
         $this->assertEquals('EERSTE MAAND, MAART VERZEKERING 5002100023 310160', $structuredTransaction->getDescription());
     }

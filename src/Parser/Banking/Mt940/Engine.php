@@ -149,8 +149,9 @@ abstract class Engine
                 $transaction->setAccountName($this->parseTransactionAccountName());
                 $transaction->setPrice($this->parseTransactionPrice());
                 $transaction->setDebitCredit($this->parseTransactionDebitCredit());
-                $transaction->setCancellation($this->parseTransactionCancellation());
+                $transaction->setCancellationReason($this->parseTransactionCancellationReason());
                 $transaction->setDescription($this->parseTransactionDescription());
+                $transaction->setFullDescription($this->parseFullTransactionDescription());
                 $transaction->setValueTimestamp($this->parseTransactionValueTimestamp());
                 $transaction->setEntryTimestamp($this->parseTransactionEntryTimestamp());
                 $transaction->setTransactionCode($this->parseTransactionCode());
@@ -438,8 +439,9 @@ abstract class Engine
      *
      * @return boolean
      */
-    protected function parseTransactionCancellation () {
-        return false;
+    protected function parseTransactionCancellationReason() {
+        preg_match('#[\n]:86:.*/RTRN/([^/]+)/#', $this->getCurrentTransactionData(), $matches);
+        return $matches[1] ?? null;
     }
 
     /**
@@ -457,6 +459,28 @@ abstract class Engine
         }
 
         return '';
+    }
+
+    /**
+     * Get the full transaction description.
+     *
+     * This method cannot be overridden.
+     *
+     * @return string
+     */
+    final protected function parseFullTransactionDescription()
+    {
+        $matches = [];
+        $result = '';
+
+        if (preg_match_all('/[\n]:86:(.*?)(?=\n(:6(1|2))|$)/s', $this->getCurrentTransactionData(), $matches)
+            && !empty($matches[1])
+        ) {
+            $result = implode(PHP_EOL, $matches[1]);
+            $result = preg_replace('/[\r\n]+/', '', trim($result));
+        }
+
+        return $result;
     }
 
     /**

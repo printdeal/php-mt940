@@ -37,12 +37,12 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
         $known = [
             '555555555',
             '555555555',
-            '555555555',
-            '555555555',
+            '21AA99BBBB0555555555',
+            '21AA99BBBB0555555555',
             '888888888',
             '888888888',
-            '888888888',
-            '888888888',
+            '21AA99BBBB0888888888',
+            '21AA99BBBB0888888888',
         ];
 
         foreach ($this->transactions as $i => $transaction) {

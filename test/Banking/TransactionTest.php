@@ -131,16 +131,17 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
     public function testJsonSerialization()
     {
-        $expected = '{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit":"D","cancellation":false,'.
-            '"description":"test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}';
+        $expected = '{"account":"123123","accountName":"Kingsquare BV","price":110,"debitcredit":"D","cancellationReason":null,'.
+            '"description":"test","fullDescription":"full test","valueTimestamp":1231,"entryTimestamp":1234,"transactionCode":"13G"}';
 
         $params = [
             'account' => '123123',
             'accountName' => 'Kingsquare BV',
             'price' => 110.0,
             'debitcredit' => Transaction::DEBIT,
-            'cancellation' => false,
+            'cancellationReason' => null,
             'description' => 'test',
+            'fullDescription' => 'full test',
             'valueTimestamp' => 1231,
             'entryTimestamp' => 1234,
             'transactionCode' => '13G',
